@@ -1,0 +1,16 @@
+[
+  {
+    "referencing_table": "user_menus",
+    "referencing_column": "user_id",
+    "referenced_table": "users",
+    "referenced_column": "id",
+    "constraint_name": "user_menus_user_id_fkey"
+  },
+  {
+    "referencing_table": "shopping_carts",
+    "referencing_column": "user_id",
+    "referenced_table": "users",
+    "referenced_column": "id",
+    "constraint_name": "shopping_carts_user_id_fkey"
+  }
+]

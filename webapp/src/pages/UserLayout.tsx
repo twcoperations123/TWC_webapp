@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet, useParams, useNavigate } from "react-router-dom";
+import { Outlet, useParams, useNavigate, Navigate } from "react-router-dom";
 import ProgressLink from "../components/ProgressLink";
 import { UserBurger, UserSideDrawer } from "../components/UserSideDrawer";
 import { useUsers } from "../contexts/UsersContext";
@@ -23,6 +23,13 @@ export default function UserLayout() {
       navigate(`/user/${user.id}/dashboard`, { replace: true });
     }
   }, [user, id, navigate]);
+
+  if (!user) {
+    return <Navigate to="/sign-in" replace />;
+  }
+  if (id && user.id !== id) {
+    return <Navigate to={`/user/${user.id}/dashboard`} replace />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

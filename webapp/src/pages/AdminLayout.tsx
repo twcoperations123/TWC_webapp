@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Outlet, Navigate } from "react-router-dom";
 import ProgressLink from "../components/ProgressLink";
 import { Burger, SideDrawer } from "../components/SideDrawer";
 import Logo from "../assets/TWC_Logo_Horiztonal_Black_Gold.png";
@@ -8,19 +8,26 @@ import { useAuth } from "../contexts/AuthContext";
 export default function AdminLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { user, isLoading } = useAuth();
-  const navigate = useNavigate();
 
-  // Secondary guard in case routes are accessed directly or hydration mismatches
-  useEffect(() => {
-    if (isLoading) return; // wait for auth to resolve
-    if (!user) {
-      navigate("/sign-in", { replace: true });
-      return;
-    }
-    if (user.role !== "admin") {
-      navigate(`/user/${user.id}/dashboard`, { replace: true });
-    }
-  }, [user, isLoading, navigate]);
+  // Hard block render until auth resolved
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/sign-in" replace />;
+  }
+
+  if (user.role !== "admin") {
+    return <Navigate to={`/user/${user.id}/dashboard`} replace />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -43,25 +43,11 @@ function mapDbUser(
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Initialize user from localStorage if available, otherwise null
-  const [user, setUser] = useState<User | null>(() => {
-    try {
-      const savedUser = localStorage.getItem('currentUser');
-      return savedUser ? JSON.parse(savedUser) : null;
-    } catch {
-      return null;
-    }
-  });
+  // Initialize user as null - don't trust localStorage until session is verified
+  const [user, setUser] = useState<User | null>(null);
   
-  // Only show loading if we have no user at all (cached or otherwise)
-  const [isLoading, setIsLoading] = useState(() => {
-    try {
-      const savedUser = localStorage.getItem('currentUser');
-      return !savedUser; // Only load if no cached user exists
-    } catch {
-      return true; // Load if localStorage is broken
-    }
-  });
+  // Always start with loading true to verify session
+  const [isLoading, setIsLoading] = useState(true);
 
   // This useEffect hook is responsible for fetching the user profile data
   // from our 'users' table using the session data from Supabase.
@@ -79,12 +65,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (data && isMounted) {
           const mappedUser = mapDbUser(data);
           setUser(mappedUser);
-          // Persist user to localStorage for optimistic loading
+          // Only persist user to localStorage if we have a valid session
           localStorage.setItem('currentUser', JSON.stringify(mappedUser));
         }
       } else if (isMounted) {
         setUser(null);
-        // Clear user from localStorage when signed out
+        // Clear user from localStorage when no valid session
         localStorage.removeItem('currentUser');
       }
       if (isMounted) {
@@ -92,12 +78,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    // Load user on initial render
+    // Load user on initial render - always check session first
     supabase.auth.getSession().then(({ data: { session } }) => {
-      // Only show loading if we don't have a cached user and there's a session
-      if (!user && session) {
-        setIsLoading(true);
-      }
       loadAndSetUser(session);
     });
 

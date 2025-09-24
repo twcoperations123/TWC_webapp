@@ -1,5 +1,7 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate, useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -11,9 +13,26 @@ export default function ProtectedRoute({ children, requiredRole, allowOwnUserOnl
   const { user, isLoading } = useAuth();
   const location = useLocation();
   const params = useParams();
+  const [sessionChecked, setSessionChecked] = useState(false);
+  const [validSession, setValidSession] = useState(false);
 
-  // Show loading state while checking authentication
-  if (isLoading) {
+  // Verify there's actually a valid Supabase session, not just cached user data
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        setValidSession(!!(session?.user && !error));
+      } catch {
+        setValidSession(false);
+      }
+      setSessionChecked(true);
+    };
+
+    checkSession();
+  }, []);
+
+  // Show loading state while checking authentication or session
+  if (isLoading || !sessionChecked) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -24,8 +43,10 @@ export default function ProtectedRoute({ children, requiredRole, allowOwnUserOnl
     );
   }
 
-  // Redirect to sign-in if not authenticated
-  if (!user) {
+  // Redirect to sign-in if not authenticated OR no valid session
+  if (!user || !validSession) {
+    // Clear any stale localStorage data
+    localStorage.removeItem('currentUser');
     return <Navigate to="/sign-in" state={{ from: location }} replace />;
   }
 

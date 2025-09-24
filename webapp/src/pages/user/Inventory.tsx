@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useUsers } from "../../contexts/UsersContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { UserMenuService } from "../../services/userMenuService";
@@ -14,7 +14,7 @@ interface CartItem extends MenuItem {
 
 export default function UserInventory() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  // const navigate = useNavigate(); // Unused for now
   const { users } = useUsers();
   const { user: authUser, isLoading: authLoading } = useAuth();
   const { startNavigation } = useNavigationProgress();

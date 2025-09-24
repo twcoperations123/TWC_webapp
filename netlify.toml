@@ -1,0 +1,15 @@
+[build]
+# Build the app from the webapp/ subdirectory
+base = "webapp"
+publish = "dist"
+command = "corepack enable && pnpm install && pnpm build"
+
+[build.environment]
+# Ensure a modern Node runtime (Netlify defaults may vary)
+NODE_VERSION = "20"
+
+# SPA fallback so deep links don’t 404
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200

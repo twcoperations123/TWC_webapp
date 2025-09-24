@@ -1,20 +1,22 @@
 // src/pages/Landing.tsx
 import Logo from "../assets/TWC_Logo_Horiztonal_White.png";
+import VerticalLogo from "../assets/TWC_Logo_Vertical_White.png";
 import ProgressLink from "../components/ProgressLink";
 
 export default function Landing() {
   return (
     <>
       {/* HERO SECTION */}
-      <section
-        className="
-          relative w-full h-screen
-          bg-[url('/cocktails.webp')] bg-cover bg-center bg-no-repeat
-        "
-      >
+      <section className="relative w-full">
+        {/* Full image (no cropping) */}
+        <img
+          src="/cocktails.webp"
+          alt="Cocktails background"
+          className="block w-full h-auto select-none pointer-events-none"
+        />
         <header
           className="
-            absolute top-0 left-0 w-full h-16 sm:h-20 md:25
+            absolute top-0 left-0 w-full h-16 sm:h-20 md:h-24
             flex items-center justify-between
             px-4 sm:px-6
             z-10
@@ -28,7 +30,7 @@ export default function Landing() {
             <img
               src={Logo}
               alt="TWC logo"
-              className="h-16 sm:h-20 md:h-24 w-auto"
+              className="h-14 sm:h-16 md:h-20 lg:h-24 xl:h-28 w-auto"
             />
           </h1>
 
@@ -46,23 +48,34 @@ export default function Landing() {
           </ProgressLink>
         </header>
 
-        {/* Optional: a dark gradient overlay to make content readable */}
-        <div className="absolute inset-0 bg-black/20" />
+  {/* Optional: bottom gradient overlay for readability without hiding full image */}
+  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 via-black/25 to-transparent" />
 
-        {/* Bottom padding space if you add hero text later */}
-        <div className="absolute inset-0 flex items-end pb-14 px-6 pointer-events-none" />
-      </section>
-
-      {/* CONTENT SECTION */}
-      <section className="bg-white py-16 sm:py-24 md:py-32 lg:py-40 px-4 sm:px-6">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 text-center">
-          Premium Cocktail Delivery Service
-        </h2>
-
-        <p className="mt-4 text-sm sm:text-base text-slate-700 text-center max-w-2xl mx-auto leading-relaxed">
-          Order from our curated selection of premium cocktails and alcoholic beverages.
-          Fresh ingredients, expertly crafted, delivered to your door.
-        </p>
+        {/* Bottom-aligned hero copy + footer stacked vertically */}
+        <div className="absolute inset-0 flex flex-col justify-end items-center gap-6 pb-14 px-6">
+          <div className="w-full max-w-3xl mx-auto text-white">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              Premium Cocktail Delivery Service
+            </h2>
+            <p className="mt-3 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              Order from our curated selection of premium cocktails and alcoholic beverages. Fresh
+              ingredients, expertly crafted, delivered to your door.
+            </p>
+          </div>
+          {/* Footer logo + contact info at page bottom (centered, stacked) */}
+          <div className="w-full max-w-md mx-auto mt-2 text-center text-white/95">
+            <img
+              src={VerticalLogo}
+              alt="TWC vertical logo"
+              className="mx-auto h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 w-auto drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
+            />
+            <div className="mt-3 text-xs sm:text-sm md:text-base lg:text-lg font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              <p>312-204-7222</p>
+              <p>info@twccocktail.com</p>
+              <p>@twccocktailcollective</p>
+            </div>
+          </div>
+        </div>
       </section>
     </>
   );

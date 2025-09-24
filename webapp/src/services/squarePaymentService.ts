@@ -81,7 +81,7 @@ class SquarePaymentService {
   /**
    * Make authenticated API request to Square
    */
-  private async makeRequest(endpoint: string, options: RequestInit = {}): Promise<any> {
+  /* private async makeRequest(endpoint: string, options: RequestInit = {}): Promise<any> {
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       ...options,
       headers: {
@@ -98,7 +98,7 @@ class SquarePaymentService {
     }
 
     return response.json();
-  }
+  } */
 
   /**
    * Process a payment using Square Payment API

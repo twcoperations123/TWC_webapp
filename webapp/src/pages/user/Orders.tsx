@@ -5,14 +5,14 @@ import { useAuth } from "../../contexts/AuthContext";
 import OrderDetailsModal from "../../components/OrderDetailsModal";
 import { orderService, type Order } from "../../services/orderService";
 import { CacheService } from "../../services/cacheService";
-import { useNavigationProgress } from '../../contexts/NavigationProgressContext';
+// import { useNavigationProgress } from '../../contexts/NavigationProgressContext';
 
 export default function UserOrders() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { users } = useUsers();
   const { user: authUser, isLoading: authLoading } = useAuth();
-  const { startNavigation } = useNavigationProgress();
+  // const { startNavigation } = useNavigationProgress(); // Unused for now
   
   const currentUser = authUser || users.find((u) => u.id === id);
   

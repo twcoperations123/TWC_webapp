@@ -17,7 +17,7 @@ export default function Orders() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmOrder, setDeleteConfirmOrder] = useState<AdminOrder | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true);
 
   // Load orders from preloaded data or Supabase
   useEffect(() => {

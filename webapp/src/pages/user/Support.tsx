@@ -4,7 +4,7 @@ import { useUsers } from "../../contexts/UsersContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { HelpCircle, FileText, Clock, CheckCircle, MessageSquare, Phone } from "lucide-react";
 import SupportTicketModal from "../../components/SupportTicketModal";
-import { useNavigationProgress } from '../../contexts/NavigationProgressContext';
+// import { useNavigationProgress } from '../../contexts/NavigationProgressContext';
 
 interface SupportTicket {
   id: string;
@@ -25,7 +25,7 @@ export default function UserSupport() {
   const { id } = useParams<{ id: string }>();
   const { users } = useUsers();
   const { user: authUser, isLoading: authLoading } = useAuth();
-  const { startNavigation } = useNavigationProgress();
+  // const { startNavigation } = useNavigationProgress(); // Unused for now
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [isLoading, setIsLoading] = useState(true);

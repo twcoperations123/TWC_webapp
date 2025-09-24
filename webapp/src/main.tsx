@@ -44,6 +44,7 @@ import { NavigationProgressProvider } from "./contexts/NavigationProgressContext
 
 /* -------- components -------- */
 import NavigationProgressBar from "./components/NavigationProgressBar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -60,7 +61,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="/auth/reset-password" element={<ResetPassword />} />
 
               {/* user area */}
-              <Route path="/user/:id" element={<UserLayout />}>
+              <Route path="/user/:id" element={
+                <ProtectedRoute allowOwnUserOnly={true}>
+                  <UserLayout />
+                </ProtectedRoute>
+              }>
                 <Route index            element={<Navigate to="dashboard" replace />} />
                 <Route path="dashboard" element={<UserDashboardPage />} />
                 <Route path="orders"    element={<UserOrders />} />
@@ -73,7 +78,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               </Route>
 
               {/* admin area */}
-              <Route path="/admin" element={<AdminLayout />}>
+              <Route path="/admin" element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminLayout />
+                </ProtectedRoute>
+              }>
                 <Route index            element={<Navigate to="dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="users"     element={<Users />} />
